@@ -1,6 +1,6 @@
 # Composer template for Drupal projects
 
-[![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
+[![Build Status](https://travis-ci.org/smk/drupal-project.svg?branch=8.x)](https://travis-ci.org/smk/drupal-project)
 
 This project template should provide a kickstart for managing your site 
 dependencies with [Composer](https://getcomposer.org/).
@@ -19,7 +19,7 @@ You might need to replace `composer` with `php composer.phar` (or similar) for y
 After that you can create the project:
 
 ```
-composer create-project drupal-composer/drupal-project:8.x-dev some-dir --stability dev --no-interaction
+composer create-project smk/drupal-project:8.x-dev some-dir --stability dev --no-interaction
 ```
 
 With `composer require ...` you can download new dependencies to your installation.
@@ -33,15 +33,15 @@ composer require drupal/devel:8.*
 
 When installing the given `composer.json` some tasks are taken care of:
 
-* Drupal will be installed in the `web`-directory.
+* Drupal will be installed in the `htdocs`-directory.
 * Autoloader is implemented to use the generated composer autoloader in `vendor/autoload.php`,
   instead of the one provided by Drupal (`web/vendor/autoload.php`).
-* Modules (packages of type `drupal-module`) will be placed in `web/modules/contrib/`
-* Theme (packages of type `drupal-module`) will be placed in `web/themes/contrib/`
-* Profiles (packages of type `drupal-profile`) will be placed in `web/profiles/contrib/`
+* Modules (packages of type `drupal-module`) will be placed in `htdocs/modules/contrib/`
+* Theme (packages of type `drupal-module`) will be placed in `htdocs/themes/contrib/`
+* Profiles (packages of type `drupal-profile`) will be placed in `htdocs/profiles/contrib/`
 * Creates default writable versions of `settings.php` and `services.yml`.
 * Creates `sites/default/files`-directory.
-* Latest version of drush is installed locally for use at `vendor/bin/drush`.
+* ~~Latest version~~ Currently locked at RC2 version of drush, installed locally for use at `vendor/bin/drush`.
 
 
 ## Generate composer.json from existing project
