@@ -37,8 +37,8 @@
         "installer-paths": {
             "htdocs/core": ["type:drupal-core"],
             "htdocs/modules/contrib/{$name}": ["type:drupal-module"],
-            "htdocs/profiles/{$name}": ["type:drupal-profile"],
-            "htdocs/themes/{$name}": ["type:drupal-theme"],
+            "htdocs/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "htdocs/themes/contrib/{$name}": ["type:drupal-theme"],
             "htdocs/drush/commands/{$name}": ["type:drupal-drush"]
         }
     }
