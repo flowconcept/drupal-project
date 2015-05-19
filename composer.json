@@ -35,11 +35,11 @@
     },
     "extra": {
         "installer-paths": {
-            "web/core": ["type:drupal-core"],
-            "web/modules/contrib/{$name}": ["type:drupal-module"],
-            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "web/drush/commands/{$name}": ["type:drupal-drush"]
+            "htdocs/core": ["type:drupal-core"],
+            "htdocs/modules/contrib/{$name}": ["type:drupal-module"],
+            "htdocs/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "htdocs/themes/contrib/{$name}": ["type:drupal-theme"],
+            "htdocs/drush/commands/{$name}": ["type:drupal-drush"]
         }
     }
 }
