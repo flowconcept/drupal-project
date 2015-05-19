@@ -19,3 +19,7 @@ if [ ! -d htdocs/sites/default/files ]
   then
     mkdir -m777 htdocs/sites/default/files
 fi
+
+# Add vagrant submodule
+git submodule add git@git.flowconcept.de:vagrant.git
+cp vagrant/templates/Vagrantfile .
