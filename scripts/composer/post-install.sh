@@ -1,5 +1,10 @@
 #!/bin/sh
 
+green='\e[0;32m'
+endcolor='\e[0m'
+
+printf "${green}Running post-install.sh${endcolor}\n"
+
 # Prepare the settings file for installation
 if [ ! -f htdocs/sites/default/settings.php ]
   then
@@ -23,3 +28,9 @@ fi
 # Add vagrant submodule
 git submodule add git@git.flowconcept.de:vagrant.git
 cp vagrant/templates/Vagrantfile .
+
+# Add new files to repository
+git add Vagrantfile composer.lock htdocs/sites/default/services.yml htdocs/sites/default/settings.php
+
+printf "${green}Done.\n\nCommit and launch Vagrant VM using:${endcolor}\n"
+printf "git commit -m \"Initial commit.\" && vagrant up\n\n"
