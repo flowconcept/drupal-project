@@ -1,0 +1,25 @@
+{
+  "name": "drupal-project",
+  "version": "0.0.1",
+  "description": "Gulp project for Drupal 8 projects",
+  "homepage": "https://github.com/smk/drupal-project",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^2.3.0",
+    "gulp-changed": "^1.2.1",
+    "gulp-csscomb": "^3.0.3",
+    "gulp-csslint": "^0.1.5",
+    "gulp-eslint": "^0.12.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-sass": "^2.0.1",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-util": "^3.0.4"
+  },
+  "scripts": {
+    "postinstall": "find node_modules/ -name '*.info' -type f -delete"
+  }
+}
