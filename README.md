@@ -16,16 +16,19 @@ First you need to [install composer](https://getcomposer.org/doc/00-intro.md#ins
 > Note: The instructions below refer to the [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
 You might need to replace `composer` with `php composer.phar` (or similar) for your setup.
 
-After that you can create the project:
+After that you can start a new project by forking this repository first, since
+you're going to commit project specific files.
+
+Then checkout the repository and let composer install the dependencies: 
 
 ```
-composer create-project smk/drupal-project:8.x-dev some-dir --stability dev --no-interaction
+cd my-project
+composer install
 ```
 
-With `composer require ...` you can download new dependencies to your installation.
+With `composer require ...` you can download new dependencies to your installation:
 
 ```
-cd some-dir
 composer require drupal/devel:8.*
 ```
 
@@ -33,16 +36,18 @@ composer require drupal/devel:8.*
 
 When installing the given `composer.json` some tasks are taken care of:
 
-* Drupal will be installed in the `htdocs`-directory.
+* Drupal will be downloaded to the `htdocs/core`-directory.
 * Autoloader is implemented to use the generated composer autoloader in `vendor/autoload.php`,
-  instead of the one provided by Drupal (`web/vendor/autoload.php`).
+  instead of the one provided by Drupal (`htdocs/vendor/autoload.php`).
 * Modules (packages of type `drupal-module`) will be placed in `htdocs/modules/contrib/`
-* Theme (packages of type `drupal-module`) will be placed in `htdocs/themes/contrib/`
+* Themes (packages of type `drupal-module`) will be placed in `htdocs/themes/contrib/`
 * Profiles (packages of type `drupal-profile`) will be placed in `htdocs/profiles/contrib/`
 * Creates default writable versions of `settings.php` and `services.yml`.
 * Creates `sites/default/files`-directory.
 * ~~Latest version~~ Currently locked at RC2 version of drush, installed locally for use at `vendor/bin/drush`.
+* Vagrant will be added as git submodule and provides a `Vagrantfile`.
 
+When done, optionally commit changes made by composer, and launch the VM with `vagrant up`. 
 
 ## Generate composer.json from existing project
 
