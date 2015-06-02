@@ -8,28 +8,35 @@ var $ = require('gulp-load-plugins')();
 //  callback();
 //});
 
+var noPartials = function (file) {
+  var isWin = /^win/.test(process.platform);
+  if (isWin) {
+    return !/\\_/.test(file.path);
+  }
+  return !/\/_/.test(file.path);
+};
+
 gulp.task('styles', function () {
-  return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
-    // Process only changed files
-    .pipe($.changed('htdocs', { extension: '.css' }))
+  return gulp.src([
+    'htdocs/{modules,themes}/**/*.scss',
+    '!**/contrib/**'
+  ], { base: 'htdocs' })
+    // Avoid compiling SCSS partials
+    .pipe($.filter(noPartials))
     // Catch any errors to prevent them from crashing gulp
     .pipe($.plumber($.notify.onError({title: '<%= error.plugin %>'})))
     // Start source maps processing
     .pipe($.sourcemaps.init())
     // Convert scss to css
-    // @todo Adjust include path to include the active Drupal theme
     .pipe($.sass({
       outputStyle: 'expanded',
-      includePaths: ['.']
+      // @todo Adjustable include path to the active Drupal theme
+      includePaths: ['htdocs/themes/dmschreiber']
     }))
     // Generate browser prefixes
     .pipe($.autoprefixer('last 3 versions'))
     // Beautfy css style
     //.pipe($.csscomb('htdocs/.csscomb.json'))
-    // Lint css using Drupal rules
-    .pipe($.csslint('htdocs/.csslintrc'))
-    // @todo Custom reporter to $.notify() user if any problems
-    .pipe($.csslint.reporter())
     // Write source maps
     .pipe($.sourcemaps.write())
     // Stop error handling
@@ -37,13 +44,18 @@ gulp.task('styles', function () {
     // Write to destination
     .pipe(gulp.dest('htdocs'))
     // Push to livereload
-    .pipe($.livereload());
+    .pipe($.livereload())
+    // Lint css using Drupal rules
+    .pipe($.csslint('htdocs/.csslintrc'))
+    // @todo Custom reporter to $.notify() user if any problems
+    .pipe($.csslint.reporter());
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('htdocs/{modules,themes}/**/*.js', { base: 'htdocs' })
-    // Process only changed files
-    .pipe($.changed('htdocs'))
+  return gulp.src([
+    'htdocs/{modules,themes}/**/*.js',
+    '!**/contrib/**'
+  ], { base: 'htdocs' })
     // Push to livereload
     .pipe($.livereload())
     // Lint javascript using Drupal rules
@@ -66,8 +78,14 @@ gulp.task('watch', function () {
   $.livereload.listen();
 
   // Watch for modifications and run tasks
-  gulp.watch('htdocs/{modules,themes}/**/*.scss', ['styles']);
-  gulp.watch('htdocs/{modules,themes}/**/*.js', ['scripts']);
+  gulp.watch([
+    'htdocs/{modules,themes}/**/*.scss',
+    '!**/contrib/**'
+  ], ['styles']);
+  gulp.watch([
+    'htdocs/{modules,themes}/**/*.js',
+    '!**/contrib/**'
+  ], ['scripts']);
   //gulp.watch('htdocs/{modules,themes}/**/*.{png,jpg,jpeg,gif}', ['images']);
 });
 

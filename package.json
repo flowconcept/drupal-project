@@ -1,8 +1,9 @@
 {
   "name": "drupal-project",
   "version": "0.0.1",
-  "description": "Gulp project for Drupal 8 projects",
-  "homepage": "https://github.com/smk/drupal-project",
+  "description": "LibSass + LiveReload for Drupal 8 projects",
+  "repository": "smk/drupal-project",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.10",
@@ -11,6 +12,7 @@
     "gulp-csscomb": "^3.0.3",
     "gulp-csslint": "^0.1.5",
     "gulp-eslint": "^0.12.0",
+    "gulp-filter": "^2.0.2",
     "gulp-livereload": "^3.8.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-notify": "^2.2.0",
@@ -20,6 +22,7 @@
     "gulp-util": "^3.0.4"
   },
   "scripts": {
-    "postinstall": "find node_modules/ -name '*.info' -type f -delete"
+    "postinstall": "find node_modules/ -name '*.info' -type f -delete",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
