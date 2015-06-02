@@ -16,5 +16,6 @@ settings.local.php
 .vagrant
 d8_config/staging/.htaccess
 
-# Ignore npm packages
+# Ignore npm & bower packages
 node_modules
+bower_components
