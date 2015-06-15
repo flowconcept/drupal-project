@@ -8,21 +8,10 @@ var $ = require('gulp-load-plugins')();
 //  callback();
 //});
 
-var noPartials = function (file) {
-  var isWin = /^win/.test(process.platform);
-  if (isWin) {
-    return !/\\_/.test(file.path);
-  }
-  return !/\/_/.test(file.path);
-};
-
 gulp.task('styles', function () {
-  return gulp.src([
-    'htdocs/{modules,themes}/**/*.scss',
-    '!**/contrib/**'
-  ], { base: 'htdocs' })
-    // Avoid compiling SCSS partials
-    .pipe($.filter(noPartials))
+  return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
+    // Filter out third-party stylesheets and scss partials
+    .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/_*.scss']))
     // Catch any errors to prevent them from crashing gulp
     .pipe($.plumber($.notify.onError({title: '<%= error.plugin %>'})))
     // Start source maps processing
@@ -45,6 +34,7 @@ gulp.task('styles', function () {
     .pipe(gulp.dest('htdocs'))
     // Push to livereload
     .pipe($.livereload())
+    //.pipe($.debug())
     // Lint css using Drupal rules
     .pipe($.csslint('htdocs/.csslintrc'))
     // @todo Custom reporter to $.notify() user if any problems
@@ -52,13 +42,12 @@ gulp.task('styles', function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src([
-    'htdocs/{modules,themes}/**/*.js',
-    '!**/contrib/**'
-  ], { base: 'htdocs' })
+  return gulp.src('htdocs/{modules,themes}/**/*.js', { base: 'htdocs' })
     // Push to livereload
     .pipe($.livereload())
-    // Lint javascript using Drupal rules
+    // Filter out third-party and minified scripts before linting
+    .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/*.min.js']))
+    //.pipe($.debug())
     .pipe($.eslint())
     // @todo Custom reporter to $.notify() user if any problems
     .pipe($.eslint.format());
@@ -74,18 +63,17 @@ gulp.task('scripts', function () {
 //    .pipe(gulp.dest('htdocs'));
 //});
 
+gulp.task('build', function () {
+  gulp.start('styles');
+  //gulp.start('images');
+});
+
 gulp.task('watch', function () {
   $.livereload.listen();
 
   // Watch for modifications and run tasks
-  gulp.watch([
-    'htdocs/{modules,themes}/**/*.scss',
-    '!**/contrib/**'
-  ], ['styles']);
-  gulp.watch([
-    'htdocs/{modules,themes}/**/*.js',
-    '!**/contrib/**'
-  ], ['scripts']);
+  gulp.watch('htdocs/{modules,themes}/**/*.scss', ['styles']);
+  gulp.watch('htdocs/{modules,themes}/**/*.js', ['scripts']);
   //gulp.watch('htdocs/{modules,themes}/**/*.{png,jpg,jpeg,gif}', ['images']);
 });
 
@@ -96,6 +84,6 @@ gulp.task('clean', function (done) {
   //return $.cache.clearAll(done);
 });
 
-gulp.task('default', ['styles', 'scripts'/*, 'images'*/], function () {
+gulp.task('default', ['build'], function () {
   gulp.start('watch');
 });
