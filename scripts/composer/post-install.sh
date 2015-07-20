@@ -1,9 +1,6 @@
 #!/bin/sh
 
-green='\e[0;32m'
-endcolor='\e[0m'
-
-printf "%b" "${green}Running post-install.sh${endcolor}\n"
+echo "Running composer post-install..."
 
 # Stage composer.lock
 git add composer.lock
@@ -38,5 +35,5 @@ if [ ! -f Vagrantfile ]
     git add Vagrantfile
 fi
 
-printf "%b" "${green}Done.\n\nCommit and launch Vagrant VM using:${endcolor}\n"
-printf "git commit -m \"Initial commit.\" && vagrant up\n\n"
+echo "Done. Repository status:"
+git status -s
