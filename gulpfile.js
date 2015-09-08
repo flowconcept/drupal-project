@@ -9,6 +9,14 @@ var $ = require('gulp-load-plugins')();
 //});
 
 gulp.task('styles', function () {
+  var noPartials = function (file) {
+    var isWin = /^win/.test(process.platform);
+    if (isWin) {
+      return !/\\_/.test(file.path);
+    }
+    return !/\/_/.test(file.path);
+  };
+
   return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
     // Filter out third-party stylesheets and scss partials
     .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/_*.scss']))
@@ -65,6 +73,8 @@ gulp.task('scripts', function () {
 
 gulp.task('build', function () {
   gulp.start('styles');
+  // Scripts are not built.
+  //gulp.start('scripts');
   //gulp.start('images');
 });
 
