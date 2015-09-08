@@ -2,7 +2,7 @@
   "name": "drupal-project",
   "version": "0.0.1",
   "description": "LibSass + LiveReload for Drupal 8 projects",
-  "repository": "smk/drupal-project",
+  "repository": "flowconcept/drupal-project",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {

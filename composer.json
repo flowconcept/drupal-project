@@ -1,5 +1,5 @@
 {
-    "name": "smk/drupal-project",
+    "name": "flowconcept/drupal-project",
     "description": "Project template for Drupal 8 projects with composer",
     "type": "project",
     "license": "MIT",
