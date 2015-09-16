@@ -18,14 +18,15 @@
     ],
     "require": {
         "composer/installers": "~1",
-        "drupal/core": "8.0.x-dev",
+        "drupal/core": "8.0.0-beta15",
 
         "d11wtq/boris": "1.0.8",
         "drush/drush": "8.0.x-dev",
 
-        "drupal/config_update": "8.1.*@dev",
-        "drupal/devel": "8.1.*@dev",
-        "drupal/token": "8.1.*@dev"
+        "drupal/config_update": "8.1.x-dev",
+        "drupal/config_devel": "8.1.x-dev",
+        "drupal/devel": "8.1.x-dev",
+        "drupal/token": "8.1.x-dev"
 
     },
     "minimum-stability": "dev",
