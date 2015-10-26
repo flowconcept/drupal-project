@@ -1,20 +1,26 @@
-# Ignore Composer controlled directories
+# Ignore core and vendor when managing dependencies with Composer.
 htdocs/core
-htdocs/*/contrib
 /vendor
 
-# Ignore Drupal file directories
-htdocs/sites/default/files
-/private
-
-# Ignore Drupal local settings
+# Ignore development configuration files.
 settings.local.php
 
-# Ignore dot files
+# Ignore paths that contain user-generated content.
+htdocs/sites/*/files
+/private
+
+# Ignore SimpleTest multi-site environment.
+sites/simpletest
+
+# Ignore any contrib directories.
+htdocs/*/contrib
+
+# Ignore dot files.
 .idea
 .vagrant
 d8_config/staging/.htaccess
 
-# Ignore packages
+# Ignore libraries managed with package managers.
 node_modules
 bower_components
+htdocs/components
