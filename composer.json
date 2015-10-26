@@ -47,6 +47,11 @@
             "htdocs/profiles/contrib/{$name}": ["type:drupal-profile"],
             "htdocs/themes/contrib/{$name}": ["type:drupal-theme"],
             "htdocs/drush/commands/{$name}": ["type:drupal-drush"]
+        },
+        "patches": {
+            "drupal/features": {
+                "#2594627": "https://www.drupal.org/files/issues/2594627.01.patch"
+            }
         }
     }
 }
