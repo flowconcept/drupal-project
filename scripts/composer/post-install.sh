@@ -1,13 +1,12 @@
 #!/bin/sh
 
-echo "Running composer post-install..."
-
 # Stage composer.lock
 git add composer.lock
 
 # Prepare the settings file for installation
 if [ ! -f htdocs/sites/default/settings.php ]
   then
+    echo "Adding Drupal settings.php"
     cp htdocs/sites/default/default.settings.php htdocs/sites/default/settings.php
     chmod 777 htdocs/sites/default/settings.php
     git add htdocs/sites/default/settings.php
@@ -16,6 +15,7 @@ fi
 # Prepare the services file for installation
 if [ ! -f htdocs/sites/default/services.yml ]
   then
+    echo "Adding Drupal services.yml"
     cp htdocs/sites/default/default.services.yml htdocs/sites/default/services.yml
     chmod 777 htdocs/sites/default/services.yml
     git add htdocs/sites/default/services.yml
@@ -24,16 +24,24 @@ fi
 # Prepare the files directory for installation
 if [ ! -d htdocs/sites/default/files ]
   then
+    echo "Creating Drupal public files directory"
     mkdir -m777 htdocs/sites/default/files
 fi
 
-# Add vagrant submodule
 if [ ! -f Vagrantfile ]
   then
-    git submodule add -b d8 git@git.flowconcept.de:vagrant.git
+    # Add vagrant submodule on project initialisation
+    echo "Checking out Vagrant submodule"
+    git submodule add -b d8d8chef git@git.flowconcept.de:vagrant.git
     cp vagrant/templates/Vagrantfile .
     git add Vagrantfile
+  else
+    # Update (checkout) submodules when provisioning an existing project
+    git submodule update --init
 fi
 
-echo "Done. Repository status:"
-git status -s
+if [ -n "$(git status --untracked-files=no --porcelain)" ]
+  then
+  echo "Git status:"
+  git status --untracked-files=no --porcelain
+fi
