@@ -3,13 +3,21 @@
 /**
  * @file
  * Local development override configuration feature.
- *
- * To activate this feature, copy and rename it such that its path plus
- * filename is 'sites/example.com/settings.local.php', where example.com
- * is the name of your site. Then, go to the bottom of
- * 'sites/example.com/settings.php' and uncomment the commented lines that
- * mention 'settings.local.php'.
  */
+
+/**
+ * Database settings.
+ */
+$databases['default']['default'] = array (
+  'database' => '',
+  'username' => '',
+  'password' => '',
+  'prefix' => '',
+  'host' => 'localhost',
+  'port' => '',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);
 
 /**
  * Assertions.
@@ -34,6 +42,11 @@ assert_options(ASSERT_ACTIVE, TRUE);
  * Enable local development services.
  */
 $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+
+/**
+ * Override configuration values.
+ * ´drush --include-overridden cget´
+ */
 
 /**
  * Show all error messages, with backtrace information.
@@ -79,7 +92,7 @@ $config['system.performance']['js']['preprocess'] = FALSE;
  * During development it can be useful to install test extensions for debugging
  * purposes.
  */
-$settings['extension_discovery_scan_tests'] = TRUE;
+# $settings['extension_discovery_scan_tests'] = TRUE;
 
 /**
  * Enable access to rebuild.php.
@@ -90,3 +103,38 @@ $settings['extension_discovery_scan_tests'] = TRUE;
  * using these parameters in a request to rebuild.php.
  */
 $settings['rebuild_access'] = TRUE;
+
+/**
+ * Allow access to update.php script.
+ */
+$settings['update_free_access'] = TRUE;
+
+// Limit log size.
+$config['dblog.settings']['row_limit'] = 1000;
+
+// Adjust local file system paths.
+$settings['file_private_path'] = '/var/www/private';
+$config['system.file']['path']['temporary'] = '/tmp';
+
+// Trusted host configuration.
+# $settings['trusted_host_patterns'] = array('^www\.example\.de$');
+
+/**
+ * Configure Stage File Proxy origin.
+ */
+/*
+$conf['stage_file_proxy_origin'] = call_user_func(function() {
+  $aliases = array();
+  // Include drush configs
+  $drush_config = '/vagrant/vagrant/config/root/home/vagrant/.drush/vagrant.aliases.drushrc.php';
+  if (!file_exists($drush_config)) {
+  	return FALSE;
+  }
+  include($drush_config);
+  if (empty($aliases['staging']['uri'])) {
+    return FALSE;
+  }
+  $url = array_merge(array('user' => 'flow', 'pass' => 'flowies'), parse_url($aliases['staging']['uri']));
+  return $url['scheme'] . '://' . $url['user'] . ':' . $url['pass'] . '@' . $url['host'];
+});
+// */

@@ -1,7 +1,8 @@
 core/assets/vendor/**/*
 core/modules/locale/tests/locale_test.js
-core/vendor/**/*
+vendor/**/*
 sites/**/files/**/*
 libraries/**/*
 sites/**/libraries/**/*
 profiles/**/libraries/**/*
+**/js_test_files/**/*
