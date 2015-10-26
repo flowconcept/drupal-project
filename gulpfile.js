@@ -1,52 +1,49 @@
 'use strict';
 
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
-
-//var customNotifier = $.notify.withReporter(function (options, callback) {
-//  //console.log(options);
-//  callback();
-//});
+var gulp = require('gulp'),
+  $ = require('gulp-load-plugins')(),
+  lost = require('lost'),
+  autoprefixer = require('autoprefixer');
 
 gulp.task('styles', function () {
-  var noPartials = function (file) {
-    var isWin = /^win/.test(process.platform);
-    if (isWin) {
-      return !/\\_/.test(file.path);
-    }
-    return !/\/_/.test(file.path);
-  };
-
   return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
     // Filter out third-party stylesheets and scss partials
     .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/_*.scss']))
     // Catch any errors to prevent them from crashing gulp
-    .pipe($.plumber($.notify.onError({title: '<%= error.plugin %>'})))
+    .pipe($.plumber({
+      errorHandler: $.notify.onError({
+        message: 'Error: <%= error.message %>',
+        title: '<%= error.plugin %>'
+      })
+    }))
+    //.pipe($.debug())
     // Start source maps processing
     .pipe($.sourcemaps.init())
     // Convert scss to css
     .pipe($.sass({
       outputStyle: 'expanded',
       // @todo Adjustable include path to the active Drupal theme
-      includePaths: ['htdocs/themes/dmschreiber']
+      includePaths: ['htdocs/themes/andechsernatur']
     }))
-    // Generate browser prefixes
-    .pipe($.autoprefixer('last 3 versions'))
-    // Beautfy css style
-    //.pipe($.csscomb('htdocs/.csscomb.json'))
+    .pipe($.postcss([
+      lost(),
+      autoprefixer({
+        browsers: ['> 1% in DE', '> 1% in AT', '> 1% in CH', 'last 2 versions', 'Firefox ESR']
+      })]
+    ))
     // Write source maps
     .pipe($.sourcemaps.write())
-    // Stop error handling
-    .pipe($.plumber.stop())
+    // Lint css using Drupal rules
+    // @todo Custom reporter to $.notify() user if any problems
+    .pipe($.csslint('htdocs/.csslintrc'))
+    .pipe($.csslint.reporter())
     // Write to destination
+    .pipe($.rename({
+      extname: '.min.css'
+    }))
     .pipe(gulp.dest('htdocs'))
     // Push to livereload
-    .pipe($.livereload())
-    //.pipe($.debug())
-    // Lint css using Drupal rules
-    .pipe($.csslint('htdocs/.csslintrc'))
-    // @todo Custom reporter to $.notify() user if any problems
-    .pipe($.csslint.reporter());
+    .pipe($.livereload());
 });
 
 gulp.task('scripts', function () {
@@ -56,8 +53,8 @@ gulp.task('scripts', function () {
     // Filter out third-party and minified scripts before linting
     .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/*.min.js']))
     //.pipe($.debug())
-    .pipe($.eslint())
     // @todo Custom reporter to $.notify() user if any problems
+    .pipe($.eslint())
     .pipe($.eslint.format());
 });
 
