@@ -27,7 +27,7 @@
         "d11wtq/boris": "1.0.8",
         "drush/drush": "8.0.x-dev",
 
-        "drupal/core": "8.0.0-rc2",
+        "drupal/core": "~8.0.0",
         "drupal/config_update": "8.1.x-dev",
         "drupal/config_sync": "8.1.x-dev",
         "drupal/devel": "8.1.x-dev",
@@ -50,7 +50,7 @@
         },
         "patches": {
             "drupal/features": {
-                "#2594627": "https://www.drupal.org/files/issues/2594627.01.patch"
+                "#2594627": "https://www.drupal.org/files/issues/2594627.06.patch"
             }
         }
     }
