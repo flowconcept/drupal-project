@@ -32,7 +32,7 @@ if [ ! -f Vagrantfile ]
   then
     # Add vagrant submodule on project initialisation
     echo "Checking out Vagrant submodule"
-    git submodule add -b master git@github.com:flowconcept/drupal-vagrant.git
+    git submodule add -b master git@github.com:flowconcept/drupal-vagrant.git vagrant
     cp vagrant/templates/Vagrantfile .
     git add Vagrantfile
   else
