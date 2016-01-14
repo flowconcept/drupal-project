@@ -16,10 +16,6 @@
             "url": "https://github.com/md-systems/pathauto.git"
         },
         {
-            "type": "git",
-            "url": "https://github.com/flowconcept/drupal-vagrant.git"
-        },
-        {
             "type": "composer",
             "url": "https://packagist.drupal-composer.org"
         }
@@ -52,7 +48,6 @@
             "htdocs/profiles/contrib/{$name}": ["type:drupal-profile"],
             "htdocs/themes/contrib/{$name}": ["type:drupal-theme"],
             "htdocs/drush/commands/{$name}": ["type:drupal-drush"],
-            "vagrant": ["flowconcept/drupal-vagrant"]
         },
         "patches": {
         }

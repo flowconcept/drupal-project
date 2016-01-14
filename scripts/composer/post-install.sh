@@ -32,8 +32,12 @@ if [ ! -f Vagrantfile ]
   then
     # Add vagrant submodule on project initialisation
     echo "Checking out Vagrant submodule"
+    git submodule add -b master git@github.com:flowconcept/drupal-vagrant.git
     cp vagrant/templates/Vagrantfile .
     git add Vagrantfile
+  else
+    # Update (checkout) submodules when provisioning an existing project
+    git submodule update --init
 fi
 
 if [ -n "$(git status --untracked-files=no --porcelain)" ]
