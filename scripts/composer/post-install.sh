@@ -32,12 +32,8 @@ if [ ! -f Vagrantfile ]
   then
     # Add vagrant submodule on project initialisation
     echo "Checking out Vagrant submodule"
-    git submodule add -b d8d8chef git@git.flowconcept.de:vagrant.git
     cp vagrant/templates/Vagrantfile .
     git add Vagrantfile
-  else
-    # Update (checkout) submodules when provisioning an existing project
-    git submodule update --init
 fi
 
 if [ -n "$(git status --untracked-files=no --porcelain)" ]

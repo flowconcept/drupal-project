@@ -16,6 +16,10 @@
             "url": "https://github.com/md-systems/pathauto.git"
         },
         {
+            "type": "git",
+            "url": "https://github.com/flowconcept/drupal-vagrant.git"
+        },
+        {
             "type": "composer",
             "url": "https://packagist.drupal-composer.org"
         }
@@ -33,7 +37,8 @@
         "drupal/devel": "8.1.x-dev",
         "drupal/features": "8.3.x-dev",
         "drupal/token": "8.1.x-dev",
-        "drupal/pathauto": "8.x-1.x-dev"
+        "drupal/pathauto": "8.x-1.x-dev",
+        "flowconcept/drupal-vagrant": "dev-master"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
