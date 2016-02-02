@@ -18,6 +18,7 @@ htdocs/*/contrib
 # Ignore dot files.
 .idea
 .vagrant
+.composer_post_install
 d8_config/staging/.htaccess
 
 # Ignore libraries managed with package managers.
