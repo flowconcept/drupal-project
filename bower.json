@@ -1,0 +1,15 @@
+{
+  "name": "drupal-project",
+  "description": "Front end components for Drupal",
+  "license": "GPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "htdocs/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}
