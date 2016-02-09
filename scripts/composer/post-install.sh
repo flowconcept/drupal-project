@@ -25,7 +25,7 @@ if [ ! -f .composer_post_install ]
     then
       # Add vagrant submodule on project initialisation
       echo "Checking out Vagrant submodule"
-      git submodule add -b 8.x git@github.com:flowconcept/drupal-vagrant.git
+      git submodule add -b 8.x git@github.com:flowconcept/drupal-vagrant.git vagrant
       cp vagrant/templates/Vagrantfile .
       git add Vagrantfile
     else
