@@ -24,16 +24,15 @@
         "composer/installers": "~1.0",
         "cweagans/composer-patches": "~1.0",
 
-        "d11wtq/boris": "1.0.8",
-        "drush/drush": "8.0.x-dev",
+        "drush/drush": "8.0.*",
 
-        "drupal/core": "~8.0.0",
-        "drupal/config_update": "8.1.x-dev",
+        "drupal/core": "8.0.*",
+        "drupal/config_update": "8.1.*",
         "drupal/config_sync": "8.1.x-dev",
         "drupal/devel": "8.1.x-dev",
         "drupal/features": "8.3.x-dev",
-        "drupal/token": "8.1.x-dev",
-        "drupal/pathauto": "8.x-1.x-dev"
+        "drupal/token": "8.1.*",
+        "drupal/pathauto": "8.1.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -49,6 +48,12 @@
             "htdocs/drush/commands/{$name}": ["type:drupal-drush"]
         },
         "patches": {
+            "drupal/core": {
+                "#2655104": "https://www.drupal.org/files/issues/missing-dependencies-2655104.patch"
+            },
+            "drupal/features": {
+                "#2653046": "https://www.drupal.org/files/issues/2653046-8.patch"
+            }
         }
     }
 }
