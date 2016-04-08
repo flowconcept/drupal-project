@@ -7,7 +7,6 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "htdocs/components",
     "test",
     "tests"
   ],
