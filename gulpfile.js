@@ -3,9 +3,19 @@
 var gulp = require('gulp'),
   $ = require('gulp-load-plugins')(),
   lost = require('lost'),
-  autoprefixer = require('autoprefixer');
+  autoprefixer = require('autoprefixer'),
+  lazypipe = require('lazypipe'),
+  // @todo Rename production server environment variable ;)
+  is_production = process.env.COMPASS_PRODUCTION === 'true',
+  path = require('path');
 
 gulp.task('styles', function () {
+
+  var csslintTasks = lazypipe()
+    // @todo Custom reporter to $.notify() user if any problems
+    .pipe($.csslint, 'htdocs/.csslintrc')
+    .pipe($.csslint.reporter);
+
   return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
     // Filter out third-party stylesheets and scss partials
     .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/_*.scss']))
@@ -18,7 +28,7 @@ gulp.task('styles', function () {
     }))
     //.pipe($.debug())
     // Start source maps processing
-    .pipe($.sourcemaps.init())
+    .pipe($.if(!is_production, $.sourcemaps.init()))
     // Convert scss to css
     .pipe($.sass({
       outputStyle: 'expanded',
@@ -32,30 +42,43 @@ gulp.task('styles', function () {
       })]
     ))
     // Write source maps
-    .pipe($.sourcemaps.write())
+    .pipe($.if(!is_production, $.sourcemaps.write()))
     // Lint css using Drupal rules
-    // @todo Custom reporter to $.notify() user if any problems
-    .pipe($.csslint('htdocs/.csslintrc'))
-    .pipe($.csslint.reporter())
+    .pipe($.if(!is_production, csslintTasks()))
     // Write to destination
     .pipe($.rename({
       extname: '.min.css'
     }))
     .pipe(gulp.dest('htdocs'))
     // Push to livereload
-    .pipe($.livereload());
+    .pipe($.if(!is_production, $.livereload()));
 });
 
 gulp.task('scripts', function () {
+
+  var eslintTasks = lazypipe()
+    // @todo Custom reporter to $.notify() user if any problems
+    .pipe($.eslint)
+    .pipe($.eslint.format);
+
   return gulp.src('htdocs/{modules,themes}/**/*.js', { base: 'htdocs' })
-    // Push to livereload
-    .pipe($.livereload())
     // Filter out third-party and minified scripts before linting
     .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/*.min.js']))
-    //.pipe($.debug())
-    // @todo Custom reporter to $.notify() user if any problems
-    .pipe($.eslint())
-    .pipe($.eslint.format());
+    // Catch any errors to prevent them from crashing gulp
+    .pipe($.plumber({
+      errorHandler: $.notify.onError({
+        message: 'Error: <%= error.message %>',
+        title: '<%= error.plugin %>'
+      })
+    }))
+    .pipe($.uglify())
+    .pipe($.rename({
+      extname: '.min.js'
+    }))
+    .pipe(gulp.dest('htdocs'))
+    //.pipe($.if(!is_production, eslint()))
+    // Push to livereload
+    .pipe($.if(!is_production, $.livereload()));
 });
 
 //gulp.task('images', function () {
@@ -70,8 +93,7 @@ gulp.task('scripts', function () {
 
 gulp.task('build', function () {
   gulp.start('styles');
-  // Scripts are not built.
-  //gulp.start('scripts');
+  gulp.start('scripts');
   //gulp.start('images');
 });
 

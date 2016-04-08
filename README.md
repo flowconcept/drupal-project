@@ -1,6 +1,6 @@
 # Composer template for Drupal projects
 
-[![Build Status](https://travis-ci.org/smk/drupal-project.svg?branch=8.x)](https://travis-ci.org/smk/drupal-project)
+[![Build Status](https://travis-ci.org/flowconcept/drupal-project.svg?branch=8.x)](https://travis-ci.org/flowconcept/drupal-project)
 
 This project template should provide a kickstart for managing your site 
 dependencies with [Composer](https://getcomposer.org/).
