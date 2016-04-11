@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Production override configuration feature.
+ * Drupal production site configuration file.
  */
 
 /**
@@ -12,11 +12,10 @@ $databases['default']['default'] = array (
   'database' => '',
   'username' => '',
   'password' => '',
-  'prefix' => '',
   'host' => 'localhost',
   'port' => '',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
+  'prefix' => '',
 );
 
 /**
@@ -25,26 +24,18 @@ $databases['default']['default'] = array (
  */
 
 /**
- * Show all error messages, with backtrace information.
- *
- * In case the error level could not be fetched from the database, as for
- * example the database connection failed, we rely only on this value.
+ * Hide all error messages.
  */
 $config['system.logging']['error_level'] = 'hide';
 
 /**
- * Disable CSS and JS aggregation.
+ * Enable CSS and JS aggregation.
  */
 $config['system.performance']['css']['preprocess'] = TRUE;
 $config['system.performance']['js']['preprocess'] = TRUE;
 
 /**
  * Deny access to rebuild.php.
- *
- * This setting can be enabled to allow Drupal's php and database cached
- * storage to be cleared via the rebuild.php page. Access to this page can also
- * be gained by generating a query string from rebuild_token_calculator.sh and
- * using these parameters in a request to rebuild.php.
  */
 $settings['rebuild_access'] = FALSE;
 
