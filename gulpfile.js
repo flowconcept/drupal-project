@@ -7,7 +7,8 @@ var gulp = require('gulp'),
   lazypipe = require('lazypipe'),
   // @todo Rename production server environment variable ;)
   is_production = process.env.COMPASS_PRODUCTION === 'true',
-  path = require('path');
+  path = require('path'),
+  theme_path = path.join(__dirname, 'htdocs', 'themes', 'MYTHEME');
 
 gulp.task('styles', function () {
 
@@ -16,9 +17,7 @@ gulp.task('styles', function () {
     .pipe($.csslint, 'htdocs/.csslintrc')
     .pipe($.csslint.reporter);
 
-  return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
-    // Filter out third-party stylesheets and scss partials
-    .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/_*.scss']))
+  return gulp.src(path.join(theme_path, 'less', 'style.less')
     // Catch any errors to prevent them from crashing gulp
     .pipe($.plumber({
       errorHandler: $.notify.onError({
@@ -30,10 +29,8 @@ gulp.task('styles', function () {
     // Start source maps processing
     .pipe($.if(!is_production, $.sourcemaps.init()))
     // Convert scss to css
-    .pipe($.sass({
-      outputStyle: 'expanded',
-      // @todo Adjustable include path to the active Drupal theme
-      includePaths: ['htdocs/themes/andechsernatur']
+    .pipe($.less({
+      paths: [ theme_path, 'less' ]
     }))
     .pipe($.postcss([
       lost(),
@@ -44,12 +41,10 @@ gulp.task('styles', function () {
     // Write source maps
     .pipe($.if(!is_production, $.sourcemaps.write()))
     // Lint css using Drupal rules
-    .pipe($.if(!is_production, csslintTasks()))
+    // @todo Find a way to not use linting on bootstrap css
+    //.pipe($.if(!is_production, csslintTasks()))
     // Write to destination
-    .pipe($.rename({
-      extname: '.min.css'
-    }))
-    .pipe(gulp.dest('htdocs'))
+    .pipe(gulp.dest(path.join(theme_path, 'css')))
     // Push to livereload
     .pipe($.if(!is_production, $.livereload()));
 });
@@ -93,7 +88,7 @@ gulp.task('scripts', function () {
 
 gulp.task('build', function () {
   gulp.start('styles');
-  gulp.start('scripts');
+  //gulp.start('scripts');
   //gulp.start('images');
 });
 
@@ -101,8 +96,8 @@ gulp.task('watch', function () {
   $.livereload.listen();
 
   // Watch for modifications and run tasks
-  gulp.watch('htdocs/{modules,themes}/**/*.scss', ['styles']);
-  gulp.watch('htdocs/{modules,themes}/**/*.js', ['scripts']);
+  gulp.watch('htdocs/{modules,themes}/**/*.less', ['styles']);
+  //gulp.watch('htdocs/{modules,themes}/**/*.js', ['scripts']);
   //gulp.watch('htdocs/{modules,themes}/**/*.{png,jpg,jpeg,gif}', ['images']);
 });
 
