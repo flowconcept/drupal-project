@@ -17,7 +17,7 @@ gulp.task('styles', function () {
     .pipe($.csslint, 'htdocs/.csslintrc')
     .pipe($.csslint.reporter);
 
-  return gulp.src(path.join(theme_path, 'less', 'style.less')
+  return gulp.src(path.join(theme_path, 'less', 'style.less'))
     // Catch any errors to prevent them from crashing gulp
     .pipe($.plumber({
       errorHandler: $.notify.onError({
