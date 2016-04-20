@@ -8,7 +8,7 @@ var gulp = require('gulp'),
   // @todo Rename production server environment variable ;)
   is_production = process.env.COMPASS_PRODUCTION === 'true',
   path = require('path'),
-  theme_path = path.join(__dirname, 'htdocs', 'themes', 'MYTHEME');
+  theme_path = path.join(__dirname, 'htdocs', 'themes', '<%= theme %>');
 
 gulp.task('styles', function () {
 
