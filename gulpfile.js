@@ -8,7 +8,7 @@ var gulp = require('gulp'),
   // @todo Rename production server environment variable ;)
   is_production = process.env.COMPASS_PRODUCTION === 'true',
   path = require('path'),
-  theme_path = path.join(__dirname, 'htdocs', 'themes', '{{= theme }}');
+  theme_path = path.join(__dirname, 'htdocs', 'themes', '{{- theme }}');
 
 gulp.task('styles', function () {
 
@@ -21,8 +21,8 @@ gulp.task('styles', function () {
     // Catch any errors to prevent them from crashing gulp
     .pipe($.plumber({
       errorHandler: $.notify.onError({
-        message: 'Error: <%= error.message %>',
-        title: '<%= error.plugin %>'
+        message: 'Error: <%- error.message %>',
+        title: '<%- error.plugin %>'
       })
     }))
     //.pipe($.debug())
@@ -62,8 +62,8 @@ gulp.task('scripts', function () {
     // Catch any errors to prevent them from crashing gulp
     .pipe($.plumber({
       errorHandler: $.notify.onError({
-        message: 'Error: <%= error.message %>',
-        title: '<%= error.plugin %>'
+        message: 'Error: <%- error.message %>',
+        title: '<%- error.plugin %>'
       })
     }))
     .pipe($.uglify())
