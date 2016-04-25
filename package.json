@@ -1,9 +1,7 @@
 {
   "name": "drupal-project",
   "version": "0.0.1",
-  "description": "LibSass + LiveReload for Drupal 8 projects",
-  "repository": "flowconcept/drupal-project",
-  "license": "MIT",
+  "description": "Gulp workflow for Drupal 8 projects",
   "dependencies": {
     "autoprefixer": "^6.3.3",
     "gulp": "^3.9.1",
@@ -24,7 +22,7 @@
     "lost": "^6.7.2"
   },
   "devDependencies": {
-    "gulp-csslint": "^0.2.2",
+    "gulp-csslint": "^0.3.0",
     "gulp-eslint": "^2.0.0",
     "gulp-livereload": "^3.8.1",
     "gulp-sourcemaps": "^1.6.0"
@@ -32,5 +30,10 @@
   "scripts": {
     "postinstall": "find node_modules/ -name '*.info' -type f -delete",
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flowconcept/drupal-project.git"
+  },
+  "license": "GPL-2.0+"
 }
