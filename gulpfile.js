@@ -5,6 +5,7 @@ var gulp = require('gulp'),
   lost = require('lost'),
   autoprefixer = require('autoprefixer'),
   lazypipe = require('lazypipe'),
+  reporter = require("postcss-reporter"),
   // @todo Rename production server environment variable ;)
   is_production = process.env.COMPASS_PRODUCTION === 'true',
   path = require('path'),
@@ -36,8 +37,9 @@ gulp.task('styles', function () {
       lost(),
       autoprefixer({
         browsers: ['> 1% in DE', '> 1% in AT', '> 1% in CH', 'last 2 versions', 'Firefox ESR']
-      })]
-    ))
+      }),
+      reporter({ clearMessages: true })
+    ]))
     // Write source maps
     .pipe($.if(!is_production, $.sourcemaps.write()))
     // Lint css using Drupal rules
