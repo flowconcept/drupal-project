@@ -57,9 +57,6 @@
       "merge-extra": false
     },
     "patches": {
-      "drupal/bootstrap": {
-        "#2697503": "https://www.drupal.org/files/issues/check-for-icon-2697503.patch"
-      },
       "drupal/core": {
         "#1170362": "https://www.drupal.org/files/issues/minimal-install-profile-1170362-204.patch",
         "#2655104": "https://www.drupal.org/files/issues/missing-dependencies-2655104.patch",
