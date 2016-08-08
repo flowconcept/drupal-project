@@ -17,18 +17,23 @@
         "composer/installers": "^1.0",
         "cweagans/composer-patches": "^1.0",
         "wikimedia/composer-merge-plugin": "^1.3",
-        "drush/drush": "8.0.*",
-        "drupal/core": "8.0.*",
+        "drush/drush": "8.1.*",
+        "drupal/core": "8.1.*",
         "drupal/config_update": "8.1.*",
         "drupal/devel": "8.1.x-dev",
         "drupal/features": "8.3.*",
         "drupal/token": "8.1.*",
         "drupal/pathauto": "8.1.*",
         "drupal/adminimal_theme": "8.1.*",
-        "drupal/bootstrap": "8.3.*",
+        "drupal/bootstrap": "8.3.x-dev",
         "drupal/admin_toolbar": "8.1.*",
         "drupal/twig_tweak": "8.1.*",
         "drupal/image_url_formatter": "8.1.*"
+        "drupal/metatag": "8.1.*",
+        "drupal/pathologic": "8.1.x-dev",
+        "drupal/piwik": "8.1.x",
+        "drupal/embed": "8.1.x-dev"
+
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -59,14 +64,20 @@
             "drupal/core": {
                 "#1170362": "https://www.drupal.org/files/issues/minimal-install-profile-1170362-204.patch",
                 "#2655104": "https://www.drupal.org/files/issues/missing-dependencies-2655104.patch",
-                "#2572355": "https://www.drupal.org/files/issues/2572355-31-page-count-token.patch",
-                "#2575771": "https://www.drupal.org/files/issues/do_not_overwrite-2575771-2.patch"
+                "#2572355": "https://www.drupal.org/files/issues/2572355-43-page-count-token.patch",
+                "#2575771": "https://www.drupal.org/files/issues/do_not_overwrite-2575771-2.patch",
+                "#2645316": "https://www.drupal.org/files/issues/field-schema-2645316-2.patch"
             },
             "drupal/features": {
-                "#2653046": "https://www.drupal.org/files/issues/2653046-8.patch"
+                "#2653046": "https://www.drupal.org/files/issues/2653046-8.patch",
+                "#2668562": "https://www.drupal.org/files/issues/features-not_detecting_profile_files-2668562-2.patch",
+                "#2757611": "https://www.drupal.org/files/issues/empty_permission_export-2757611-11349231.patch"
             },
             "drupal/adminimal_theme": {
                 "#2680689": "https://www.drupal.org/files/issues/adminimal_theme-fix-styles-for-admin-toolbar-2680689-2.patch"
+            },
+            "drupal/embed": {
+                "#2778355": "https://www.drupal.org/files/issues/embed-2778355-drupal-theme-bootstrapModal-is-not-a-function.patch"
             }
         }
     }
