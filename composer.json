@@ -28,7 +28,7 @@
         "drupal/bootstrap": "8.3.x-dev",
         "drupal/admin_toolbar": "8.1.*",
         "drupal/twig_tweak": "8.1.*",
-        "drupal/image_url_formatter": "8.1.*"
+        "drupal/image_url_formatter": "8.1.*",
         "drupal/metatag": "8.1.*",
         "drupal/pathologic": "8.1.x-dev",
         "drupal/piwik": "8.1.x",
