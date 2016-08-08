@@ -70,8 +70,7 @@
             },
             "drupal/features": {
                 "#2653046": "https://www.drupal.org/files/issues/2653046-8.patch",
-                "#2668562": "https://www.drupal.org/files/issues/features-not_detecting_profile_files-2668562-2.patch",
-                "#2757611": "https://www.drupal.org/files/issues/empty_permission_export-2757611-11349231.patch"
+                "#2668562": "https://www.drupal.org/files/issues/features-not_detecting_profile_files-2668562-2.patch"
             },
             "drupal/adminimal_theme": {
                 "#2680689": "https://www.drupal.org/files/issues/adminimal_theme-fix-styles-for-admin-toolbar-2680689-2.patch"
