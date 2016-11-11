@@ -2,84 +2,90 @@
 
 var gulp = require('gulp'),
   $ = require('gulp-load-plugins')(),
-  lost = require('lost'),
   autoprefixer = require('autoprefixer'),
   lazypipe = require('lazypipe'),
+  reporter = require("postcss-reporter"),
   // @todo Rename production server environment variable ;)
-  is_production = process.env.COMPASS_PRODUCTION === 'true',
-  path = require('path');
+  isProduction = process.env.COMPASS_PRODUCTION === 'true',
+  themePath = 'htdocs/themes/vanity';
 
-gulp.task('styles', function () {
 
-  var csslintTasks = lazypipe()
-    // @todo Custom reporter to $.notify() user if any problems
-    .pipe($.csslint, 'htdocs/.csslintrc')
-    .pipe($.csslint.reporter);
+// Common gulp-plumber error handler options
+var plumberOptions = {
+  errorHandler: $.notify.onError({
+    message: 'Error: <%- error.message %>',
+    title: '<%- error.plugin %>'
+  })
+};
 
-  return gulp.src('htdocs/{modules,themes}/**/*.scss', { base: 'htdocs' })
+
+// Sass pipeline
+var sassTasks = lazypipe()
+  //.pipe($.debug)
+  .pipe(function() { return $.if(!isProduction, $.sourcemaps.init()); })
+  .pipe($.sass, {
+    outputStyle: 'expanded',
+    includePaths: [themePath + '/sass']
+  })
+  .pipe($.postcss, [
+    autoprefixer({
+      browsers: ['> 1% in DE', '> 1% in AT', '> 1% in CH', 'last 2 versions']
+    }),
+    reporter({ clearMessages: true })
+  ])
+  .pipe(function() { return $.if(!isProduction, $.sourcemaps.write()); })
+  // @todo Find a way to not use linting on bootstrap css
+  //.pipe(function() { return $.if(!isProduction, $.csslint('htdocs/.csslintrc')); })
+  .pipe(function() { return $.if(!isProduction, $.csslint.reporter()); });
+
+
+gulp.task('styles:theme', function() {
+  // Store compiled bootstrap styles in separate directory
+  return gulp.src(themePath + '/sass/*.scss')
+    // Filter out partials
+    .pipe($.filter(['**/*', '!_*.scss']))
+    .pipe($.plumber(plumberOptions))
+    .pipe(sassTasks())
+    .pipe(gulp.dest(themePath + '/css'))
+    .pipe($.if(!isProduction, $.livereload()));
+});
+
+
+gulp.task('styles:modules', function () {
+
+  return gulp.src('htdocs/modules/**/*.scss', { base: 'htdocs' })
     // Filter out third-party stylesheets and scss partials
     .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/_*.scss']))
-    // Catch any errors to prevent them from crashing gulp
-    .pipe($.plumber({
-      errorHandler: $.notify.onError({
-        message: 'Error: <%= error.message %>',
-        title: '<%= error.plugin %>'
-      })
+    .pipe($.plumber(plumberOptions))
+    .pipe(sassTasks())
+    .pipe($.rename({
+      extname: '.css'
     }))
+    .pipe(gulp.dest('htdocs'))
+    .pipe($.if(!isProduction, $.livereload()));
+});
+
+
+var scriptsGlob = [
+  themePath + '/js/**/*.js',
+  'htdocs/modules/custom/**/*.js'
+];
+
+gulp.task('scripts', function() {
+  // Store compiled custom modules scripts alongside their source files
+  return gulp.src(scriptsGlob, { base: 'htdocs' })
+    // Exclude third-party and minified scripts
+    .pipe($.filter(['**/*', '!**/vendor/**', '!**/*.min.js']))
+    .pipe($.plumber(plumberOptions))
     //.pipe($.debug())
-    // Start source maps processing
-    .pipe($.if(!is_production, $.sourcemaps.init()))
-    // Convert scss to css
-    .pipe($.sass({
-      outputStyle: 'expanded',
-      // @todo Adjustable include path to the active Drupal theme
-      includePaths: ['htdocs/themes/andechsernatur']
-    }))
-    .pipe($.postcss([
-      lost(),
-      autoprefixer({
-        browsers: ['> 1% in DE', '> 1% in AT', '> 1% in CH', 'last 2 versions', 'Firefox ESR']
-      })]
-    ))
-    // Write source maps
-    .pipe($.if(!is_production, $.sourcemaps.write()))
-    // Lint css using Drupal rules
-    .pipe($.if(!is_production, csslintTasks()))
-    // Write to destination
-    .pipe($.rename({
-      extname: '.min.css'
-    }))
-    .pipe(gulp.dest('htdocs'))
-    // Push to livereload
-    .pipe($.if(!is_production, $.livereload()));
-});
-
-gulp.task('scripts', function () {
-
-  var eslintTasks = lazypipe()
-    // @todo Custom reporter to $.notify() user if any problems
-    .pipe($.eslint)
-    .pipe($.eslint.format);
-
-  return gulp.src('htdocs/{modules,themes}/**/*.js', { base: 'htdocs' })
-    // Filter out third-party and minified scripts before linting
-    .pipe($.filter(['**/*', '!**/{contrib,vendor}/**', '!**/*.min.js']))
-    // Catch any errors to prevent them from crashing gulp
-    .pipe($.plumber({
-      errorHandler: $.notify.onError({
-        message: 'Error: <%= error.message %>',
-        title: '<%= error.plugin %>'
-      })
-    }))
     .pipe($.uglify())
-    .pipe($.rename({
-      extname: '.min.js'
-    }))
+    //.pipe($.if(!isProduction, $.eslint()))
+    .pipe($.if(!isProduction, $.eslint.format()))
+    .pipe($.rename({ extname: '.min.js' }))
     .pipe(gulp.dest('htdocs'))
-    //.pipe($.if(!is_production, eslint()))
-    // Push to livereload
-    .pipe($.if(!is_production, $.livereload()));
+    .pipe($.if(!isProduction, $.livereload()));
 });
+
 
 //gulp.task('images', function () {
 //  return gulp.src('htdocs/{modules,themes}/**/*.{png,jpg,jpeg,gif}', { base: 'htdocs' })
@@ -91,28 +97,15 @@ gulp.task('scripts', function () {
 //    .pipe(gulp.dest('htdocs'));
 //});
 
-gulp.task('build', function () {
-  gulp.start('styles');
-  gulp.start('scripts');
-  //gulp.start('images');
-});
 
-gulp.task('watch', function () {
+gulp.task('build', ['styles:theme', 'styles:modules', 'scripts'/*, 'images'*/]);
+
+gulp.task('watch', function() {
   $.livereload.listen();
-
-  // Watch for modifications and run tasks
-  gulp.watch('htdocs/{modules,themes}/**/*.scss', ['styles']);
-  gulp.watch('htdocs/{modules,themes}/**/*.js', ['scripts']);
+  gulp.watch('htdocs/themes/custom/**/*.scss', ['styles:theme']);
+  gulp.watch('htdocs/modules/custom/**/*.scss', ['styles:modules']);
+  gulp.watch(scriptsGlob, ['scripts']);
   //gulp.watch('htdocs/{modules,themes}/**/*.{png,jpg,jpeg,gif}', ['images']);
 });
 
-gulp.task('clean', function (done) {
-  //gulp.src('htdocs/{modules,themes}/**/*.scss', { read: false, base: 'htdocs' })
-  //  @todo Delete generated .css files, but no other
-  //  .pipe();
-  //return $.cache.clearAll(done);
-});
-
-gulp.task('default', ['build'], function () {
-  gulp.start('watch');
-});
+gulp.task('default', ['build', 'watch']);
