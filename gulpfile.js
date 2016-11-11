@@ -2,7 +2,6 @@
 
 var gulp = require('gulp'),
   $ = require('gulp-load-plugins')(),
-  lost = require('lost'),
   autoprefixer = require('autoprefixer'),
   lazypipe = require('lazypipe'),
   reporter = require("postcss-reporter"),
@@ -26,7 +25,6 @@ var lessTasks = lazypipe()
   .pipe(function() { return $.if(!isProduction, $.sourcemaps.init()); })
   .pipe($.less, { paths: [themePath + '/less'] })
   .pipe($.postcss, [
-    lost(),
     autoprefixer({
       browsers: ['> 1% in DE', '> 1% in AT', '> 1% in CH', 'last 2 versions']
     }),
