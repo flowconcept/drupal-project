@@ -81,7 +81,6 @@
         "#2655104": "https://www.drupal.org/files/issues/missing-dependencies-2655104.patch",
         "#2572355": "https://www.drupal.org/files/issues/2572355-43-page-count-token.patch",
         "#2575771": "https://www.drupal.org/files/issues/do_not_overwrite-2575771-2.patch",
-        "#2645316": "https://www.drupal.org/files/issues/field-schema-2645316-2.patch",
         "#2799415": "https://www.drupal.org/files/issues/2799415-15.patch"
       },
       "drupal/features": {
